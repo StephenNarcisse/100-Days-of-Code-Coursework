@@ -14,7 +14,7 @@ main:
 	
 	jal userInput
 	
-	la $s5, zarba #t9 points to the string
+	la $s5, zarba #s5 points to the string
 	
 	stringSizeCheck:
 		lb $a0, 0($s5) #Load the character from the string in a1 into a0

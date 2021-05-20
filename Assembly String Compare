@@ -1,0 +1,86 @@
+.data	
+	prompt:		.asciiz "\nEnter a number "
+	zarba:		.space 20
+	fail:		.asciiz "\nThe sequence is not a palindrome "
+.text
+main:
+	li $t2, 0 #String size counter/index
+	li $t3, 0 #String Size variable
+	li $t4, 2 #Odd or even check
+	li $s5, 0 #String Holder variable
+	li $s6, 0 #Top of stack variable
+	
+	
+	jal userInput
+	la $s5, zarba #t9 points to the string
+	jal stringPrint
+	
+	stringSizeCheck:
+		lb $a0, 0($s5) #Load the character from the string in a1 into a0
+		beqz $a0, sizeBreak
+		li $v0, 11
+		syscall
+		addu $s5, $s5, 1 #Go to the next byte in the string
+		addi $t2, $t2, 1 #Increment index/counter
+		j stringSizeCheck
+	sizeBreak:
+		sub $t3, $t2, 1 #t2 - 1 = String size
+		div $t3, $t4 #Divide array size by 2
+		mflo $s1 #Quotient
+		mfhi $s2 #Remainder
+		
+		addi $t2, $zero, 0 #Reset counter
+		la $s5, zarba #Reload the string
+	pushLoop:
+		lb $a0, 0($s5) #Place character from string into a0
+		addi $sp, $sp, -4
+		sw $a0, 0($sp) #Push character to the stack
+		addu $s5, $s5, 1 #Go to the next byte in the string
+		addi $t2, $t2, 1 #Counter +1
+		beq $t2, $s1, evenOrOdd #When counter is equal to half of array size, leave loop
+		j pushLoop
+	evenOrOdd:
+		beqz $s2, popLoop #If s2==0 array size even, go to Stack pop loop
+		addi $s5, $s5, 1 #Skip the middle character if array size was odd
+	popLoop:
+		lw $a0, 0($sp) #Put top of stack in $a0
+		li $v0, 11
+		syscall
+		move $s6, $a0 #store top of stack in s6
+		lb $a0, 0($s5) #Load character from string
+		li $v0, 11
+		syscall
+		bne $s6, $a3, checkFail #Compare if top of stack is the same as string character
+		subi $sp, $sp, -4
+		j popLoop
+		
+	checkFail:
+		li $v0, 4
+		la $a0, fail
+		syscall
+		
+	
+	
+		li $v0, 10
+		syscall
+userInput:
+		#Take user input, store it in input
+		li $v0, 4
+		la $a0, prompt
+		syscall
+		li $v0, 8
+		la $a0, zarba
+		li $a1, 20
+		syscall
+		jr $ra		
+		
+stringPrint:
+	li $v0, 4
+	la $a0, zarba
+	syscall
+	jr $ra
+		
+increment:
+	#Loop counter +1 at start of loop
+	addi $s1, $s1, 1 
+	jr $ra

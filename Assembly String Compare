@@ -17,7 +17,7 @@ main:
 	la $s5, zarba #s5 points to the string
 	
 	stringSizeCheck:
-		lb $a0, 0($s5) #Load the character from the string in a1 into a0
+		lb $a0, 0($s5) #Load the character from the string in s5 into a0
 		beqz $a0, twentyCheck
 		addu $s5, $s5, 1 #Go to the next byte in the string
 		addi $t2, $t2, 1 #Increment index/counter

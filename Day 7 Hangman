@@ -1,0 +1,32 @@
+import random
+
+word_list = ['Peacock', 'Crow', 'Dove', 'Sparrow', 'Goose', 'Stork', 'Pigeon', 'Turkey', 'Hawk', 'Raven']
+chosen_word = random.choice(word_list).lower()
+print(chosen_word)
+
+word_length = len(chosen_word)
+char_output = []
+lives = 6
+
+for dashes in range(word_length):
+    char_output.append('_')
+
+guess_string = ''.join(char_output)
+print(guess_string)
+game_end = False
+
+while not game_end:
+    guess = input("Guess a letter: ").lower()
+    for letter in range(0, word_length):
+        if guess == chosen_word[letter]:
+            char_output[letter] = guess
+    guess_string = ''.join(char_output)
+    if guess not in chosen_word:
+        lives -= 1
+    print(guess_string)
+    if guess_string == chosen_word:
+        game_end = True
+        print('You win!')
+    if lives == 0:
+        game_end = True
+        print('You lose :(')

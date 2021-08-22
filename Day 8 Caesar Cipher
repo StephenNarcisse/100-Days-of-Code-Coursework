@@ -1,1 +1,25 @@
 
+caesar_text += new_letteralphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+            'v', 'w', 'x', 'y', 'z']
+
+direction = int(input("Type '1' to encrypt, type '2' to decrypt:\n"))
+text = input("Type your message:\n").lower()
+shift = int(input("Type the shift number:\n"))
+
+
+def caesar(plain_text, shift_amount):
+    caesar_text = ""
+    for letter in plain_text:
+        position = alphabet.index(letter)
+        if direction == 1:  # encrypt by shifting +
+            new_position = position + shift_amount
+            new_letter = alphabet[new_position % len(alphabet)]
+        elif direction == 2:  # decrypt by shifting -
+            new_position = position + len(alphabet) - shift_amount
+            new_letter = alphabet[new_position % len(alphabet)]
+        caesar_text += new_letter
+    print(f"The resulting is {caesar_text}")
+
+
+caesar(plain_text=text, shift_amount=shift)
+

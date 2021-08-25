@@ -1,0 +1,29 @@
+def subtract(n1, n2):
+    return n1 - n2
+
+
+def multiply(n1, n2):
+    return n1 * n2
+
+
+def divide(n1, n2):
+    return n1 / n2
+
+
+def add(n1, n2):
+    return n1 + n2
+
+
+operations = {
+    "+": add,
+    "-": subtract,
+    "*": multiply,
+    "/": divide
+}
+
+while True:
+    first = int(input("What's the first number?: "))
+    second = int(input("What's the second number?: "))
+    operator = input("Pick an operation (+ - * /): ")
+    calculate = operations[operator]
+    print(calculate(first, second))

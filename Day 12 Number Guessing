@@ -1,0 +1,28 @@
+import random
+
+print("Welcome to the number Guessing Game!\n"
+      "I'm thinking of a number between 1 and 100\n"
+      "You have 5 attempts remaining to guess the number.\n")
+
+
+def guess_check():
+    answer = random.randint(1, 100)
+    lives = 5
+    while lives > 0:
+        guess = int(input("Make a guess: "))
+        if guess == answer:
+            print("That's the right guess, nice job!")
+            return
+        elif guess > answer and (lives - 1) > 0:
+            print("Too high, guess again. \n")
+            lives -= 1
+        elif guess < answer and (lives - 1) > 0:
+            print("Too low, guess again. \n")
+            lives -= 1
+        elif guess != answer and (lives - 1) == 0:
+            print("Sorry, you lose. You're out of lives.")
+
+    return
+
+
+guess_check()

@@ -48,8 +48,6 @@ def card_select():
         points += 2
     return points
 
-    return points
-
 
 def player_draw():
     global player_points

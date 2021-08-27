@@ -1,0 +1,120 @@
+import random
+
+source_deck = {
+    "Spades": [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"],
+    "Hearts": [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"],
+    "Clubs": [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"],
+    "Diamonds": [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+
+}
+blackjack_deck = {}
+player_hand = []
+computer_hand = []
+player_points = 0
+computer_points = 0
+
+
+def deck_reset():
+    global blackjack_deck
+    blackjack_deck = source_deck
+
+
+def card_select():
+    suit = random.randint(0, 3)
+    points = random.randint(0, 12)
+    card = 0
+    if suit == 0:
+        suit = "Spades"
+    if suit == 1:
+        suit = "Hearts"
+    if suit == 2:
+        suit = "Clubs"
+    if suit == 3:
+        suit = "Diamonds"
+
+    if card == "drawn":
+        card_select()
+    else:
+        card = blackjack_deck[suit][points]
+
+    blackjack_deck[suit][points] = "drawn"
+    print(f'\n{card} of {suit}  ')
+    if points == 13:
+        points = 11
+        return points
+    if points > 8:
+        points = 10
+    else:
+        points += 2
+    return points
+
+    return points
+
+
+def player_draw():
+    global player_points
+    play_card = card_select()
+    player_points += play_card
+    player_hand.append(play_card)
+    player_hand_output()
+
+
+def computer_draw():
+    global computer_points
+    comp_card = card_select()
+    computer_points += comp_card
+    computer_hand.append(comp_card)
+    computer_hand_output()
+
+
+def player_hand_output():
+    print(f'Your cards: {player_hand}, current score: {player_points}')
+
+
+def computer_hand_output():
+    print(f'CPU: {computer_hand}, current score: {computer_points}')
+
+
+def hit_check():
+    global player_points
+    if 11 in player_hand and player_points > 21:
+        player_hand.remove(11)
+        player_hand.add(1)
+        player_points -= 10
+
+    if player_points > 21:
+        print("Sorry that's a bust, you lose.")
+        quit()
+
+    check = input("Will you hit? y/n: ")
+    if check == "y":
+        player_draw()
+        hit_check()
+    return
+
+
+def cpu_check():
+    if computer_points > 21:
+        print('CPU Loses! ')
+        return
+    if computer_points > player_points:
+        print('CPU Wins!')
+        return
+    if computer_points < 21:
+        computer_draw()
+        cpu_check()
+
+
+deck_reset()
+
+# Game start
+player_draw()
+player_draw()
+computer_draw()
+hit_check()
+cpu_check()
+
+# print(blackjack_deck)
+
+# if input("Would you like to play a game of blackjack? y/n") == y:
+#     blackjack()

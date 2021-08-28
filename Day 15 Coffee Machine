@@ -1,0 +1,85 @@
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "milk": 0,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+
+resources = {
+    "water": 300,
+    "milk": 200,
+    "coffee": 100,
+}
+
+
+def ingredient_use(drink):
+    if resources["water"] < MENU[drink]["ingredients"]["water"]:
+        return "water"
+    if resources["milk"] < MENU[drink]["ingredients"]["milk"]:
+        return "milk"
+    if resources["coffee"] < MENU[drink]["ingredients"]["coffee"]:
+        return "coffee"
+    resources["water"] -= MENU[drink]["ingredients"]["water"]
+    resources["milk"] -= MENU[drink]["ingredients"]["milk"]
+    resources["coffee"] -= MENU[drink]["ingredients"]["coffee"]
+    return 1
+
+
+def payment_calculation(drink):
+    print("Please insert coins.")
+    quarters = .25 * float(input("How many quarters?: "))
+    dimes = .1 * float(input("How many dimes?: "))
+    nickles = .05 * float(input("How many nickles?: "))
+    pennies = .01 * float(input("How many pennies?: "))
+    cost = MENU[drink]["cost"]
+    profit = (quarters + dimes + nickles + pennies) - cost
+    if profit < cost:
+        print("Sorry that's not enough money. Money refunded.")
+        return 0
+
+    return cost
+
+
+def menu(user_input):
+    if user_input == "off":
+        return 404
+    if user_input == "report":
+        print(resources)
+        print(f'${money}')
+        return 0
+    ingredient_check = ingredient_use(user_input)
+    if ingredient_check != 1:
+        print(f"Sorry there is not enough {ingredient_check} ")
+        return 0
+    payment = payment_calculation(user_input)
+    return payment
+
+
+money = 0
+on = True
+while on:
+    selection = input('What would you like? (espresso/latte/cappuccino): ')
+    money += menu(selection)
+    if money == 404:
+        on = False
+
